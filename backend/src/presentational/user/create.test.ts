@@ -5,15 +5,8 @@ import { InvalidEmailError } from "../../utils/helper/errors/invalidEmail";
 import { InvalidParamError } from "../../utils/helper/errors/InvalidParams";
 import { NotEqualsError } from "../../utils/helper/errors/notEquals";
 import httpResponse from "../../utils/helper/httpResponse";
+import { validUser } from "../../utils/helper/validUser";
 import { UserCreateController } from "./create";
-
-const validUser = {
-  id: "any_id",
-  name: "valid_name",
-  email: "invalid_email",
-  password: "valid_password",
-  confirmPassword: "valid_password",
-};
 
 function makeSut() {
   const emailValidatorSpy = new EmailValidatorSpy();

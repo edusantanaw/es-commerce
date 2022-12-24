@@ -1,81 +1,19 @@
+import { EmailValidatorSpy } from "../../mocks/emailValidatorSpy";
+import { CreateUserUseCaseSpy } from "../../mocks/useCases/createUser";
+import { EmailAlreadyBeingUsed } from "../../utils/helper/errors/emailAlreadyBeingUsed";
 import { InvalidEmailError } from "../../utils/helper/errors/invalidEmail";
 import { InvalidParamError } from "../../utils/helper/errors/InvalidParams";
 import { NotEqualsError } from "../../utils/helper/errors/notEquals";
 import httpResponse from "../../utils/helper/httpResponse";
+import { UserCreateController } from "./create";
 
-interface data {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
-
-interface emailValidator {
-  isValid: (email: string) => boolean;
-}
-type user = {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
+const validUser = {
+  id: "any_id",
+  name: "valid_name",
+  email: "invalid_email",
+  password: "valid_password",
+  confirmPassword: "valid_password",
 };
-
-interface createUserUseCase {
-  create: (data: data) => Promise<{ accessToken: string; user: user }>;
-}
-
-export class UserCreateController {
-  constructor(
-    private emailValidator: emailValidator,
-    private createUserUseCase: createUserUseCase
-  ) {}
-
-  async handle(data: data) {
-    try {
-      this.validate(data);
-      const { accessToken, user } = await this.createUserUseCase.create(data);
-      return { accessToken, user };
-    } catch (error) {
-      return error;
-    }
-  }
-
-  validate(data: data) {
-    const { name, email, password, confirmPassword } = data;
-    if (!name) throw httpResponse.badRequest(new InvalidParamError("name"));
-
-    if (!email) throw httpResponse.badRequest(new InvalidParamError("email"));
-
-    if (!password)
-      throw httpResponse.badRequest(new InvalidParamError("password"));
-
-    if (!confirmPassword)
-      throw httpResponse.badRequest(new InvalidParamError("confirmPassword"));
-
-    if (password !== confirmPassword)
-      throw httpResponse.badRequest(new NotEqualsError());
-
-    if (!this.emailValidator.isValid(email))
-      throw httpResponse.badRequest(new InvalidEmailError());
-  }
-}
-
-class EmailValidatorSpy implements emailValidator {
-  valid = false;
-  isValid(email: string) {
-    return this.valid;
-  }
-}
-
-class CreateUserUseCaseSpy {
-  user: user | null = null;
-  accessToken = "token";
-  async create(data: data) {
-    if (!this.user) throw "";
-    return { user: this.user, accessToken: this.accessToken };
-  }
-}
 
 function makeSut() {
   const emailValidatorSpy = new EmailValidatorSpy();
@@ -154,20 +92,40 @@ describe("first", () => {
     expect(response).toEqual(httpResponse.badRequest(new NotEqualsError()));
   });
 
-  test("Should return statusCode = 400 if passwords is not equals", async () => {
+  test("Should return statusCode = 400 if an invalid email is provided", async () => {
     const { emailValidatorSpy, createUserUseCase } = makeSut();
     emailValidatorSpy.valid = false;
     const userCreateController = new UserCreateController(
       emailValidatorSpy,
       createUserUseCase
     );
-    const response = await userCreateController.handle({
-      name: "valid_name",
-      email: "invalid_email",
-      password: "valid_password",
-      confirmPassword: "valid_password",
-    });
+    const response = await userCreateController.handle(validUser);
 
     expect(response).toEqual(httpResponse.badRequest(new InvalidEmailError()));
+  });
+
+  test("Should return an error if email provided is already being used", async () => {
+    const { emailValidatorSpy, createUserUseCase } = makeSut();
+    createUserUseCase.emailAlreadyBeingUsed = true;
+    createUserUseCase.user = validUser;
+    const userCreateController = new UserCreateController(
+      emailValidatorSpy,
+      createUserUseCase
+    );
+    const response = await userCreateController.handle(validUser);
+    expect(response).toStrictEqual(
+      httpResponse.badRequest(new EmailAlreadyBeingUsed())
+    );
+  });
+
+  test("Should return an access token and user if user is created with success", async () => {
+    const { emailValidatorSpy, createUserUseCase } = makeSut();
+    createUserUseCase.user = validUser;
+    const userCreateController = new UserCreateController(
+      emailValidatorSpy,
+      createUserUseCase
+    );
+    const response = await userCreateController.handle(validUser);
+    expect(response).toEqual({ accessToken: "token", user: validUser });
   });
 });

@@ -2,7 +2,6 @@ import { EncrypterSpy } from "../../mocks/helpers/encrypterSpy";
 import { GenerateTokenSpy } from "../../mocks/helpers/generateTokenSpy";
 import { UserRepositorySpy } from "../../mocks/repositories/userRepositorySpy";
 import { EmailAlreadyBeingUsed } from "../../utils/helper/errors/emailAlreadyBeingUsed";
-import httpResponse from "../../utils/helper/httpResponse";
 import { validUser } from "../../utils/helper/validUser";
 import { CreateUserUseCase } from "./createUserUseCase";
 
@@ -30,6 +29,7 @@ describe("Create user use case", () => {
     const response = createUserUseCase.create(validUser);
     expect(response).rejects.toEqual(new EmailAlreadyBeingUsed().message);
   });
+
   test("Should return an user and accessToken", async () => {
     const { encrypter, generateToken, userRepository } = makeSut();
     const createUserUseCase = new CreateUserUseCase(
@@ -38,6 +38,7 @@ describe("Create user use case", () => {
       generateToken
     );
     const response = await createUserUseCase.create(validUser);
-    expect(response).toEqual({ accessToken: "token", user: validUser });
+    expect(response.accessToken).toEqual("token");
+    expect(response.user).toEqual(validUser);
   });
 });

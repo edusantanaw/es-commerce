@@ -1,6 +1,6 @@
-import { CreateUserUseCase } from "../../domain/useCases/createUserUseCase";
+import { CreateUserUseCase } from "../../domain/usecases/createUserUseCase";
 import { UserRepository } from "../../infra/repositories/userRepository";
-import { UserCreateController } from "../../presentational/user/create";
+import { UserCreateController } from "../../presentational/auth/create";
 import { EmailValidator } from "../../utils/helper/emailValidator";
 import { Encrypter } from "../../utils/helper/encrypter";
 import { GenerateToken } from "../../utils/helper/generateToken";

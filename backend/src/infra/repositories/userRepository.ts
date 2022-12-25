@@ -1,5 +1,5 @@
 import { user } from "../../prisma/prisma";
-import { user as respUser } from "../../protocols/entity/user";
+import { user as respUser } from "../../domain/entities/user";
 import { data } from "../../protocols/presentational/userCreateData";
 import { userRepository } from "../../protocols/repository/userRepository";
 
@@ -13,17 +13,13 @@ export class UserRepository implements userRepository {
     return userResponse;
   }
   async create(data: data) {
-    try {
-      const userResponse = await user.create({
-        data: {
-          email: data.email,
-          name: data.name,
-          password: data.password,
-        },
-      });
-      return userResponse;
-    } catch (error) {
-      console.log(error);
-    }
+    const userResponse = await user.create({
+      data: {
+        email: data.email,
+        name: data.name,
+        password: data.password,
+      },
+    });
+    return userResponse;
   }
 }

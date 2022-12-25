@@ -1,4 +1,4 @@
-import { user } from "../../protocols/entity/user";
+import { user } from "../../domain/entities/user";
 import { data } from "../../protocols/presentational/userCreateData";
 import { validUser } from "../../utils/helper/validUser";
 

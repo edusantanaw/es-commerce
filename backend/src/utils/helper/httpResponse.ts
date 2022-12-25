@@ -2,14 +2,14 @@ class HttpResponse {
   badRequest(error: { message: string }) {
     return {
       statusCode: 400,
-      body: error,
+      body: error.message,
     };
   }
 
   unauthorized(error: { message: string }) {
     return {
       statusCode: 401,
-      body: error,
+      body: error.message,
     };
   }
 

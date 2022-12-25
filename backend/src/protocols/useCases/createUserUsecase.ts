@@ -1,4 +1,4 @@
-import { user } from "../entity/user";
+import { user } from "../../domain/entities/user";
 import { data } from "../presentational/userCreateData";
 
 export interface createUserUseCase {

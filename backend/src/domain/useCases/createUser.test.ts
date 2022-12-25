@@ -27,10 +27,8 @@ describe("Create user use case", () => {
       userRepository,
       generateToken
     );
-    const response = await createUserUseCase.create(validUser);
-    expect(response).toEqual(
-      httpResponse.badRequest(new EmailAlreadyBeingUsed())
-    );
+    const response = createUserUseCase.create(validUser);
+    expect(response).rejects.toEqual(new EmailAlreadyBeingUsed().message);
   });
   test("Should return an user and accessToken", async () => {
     const { encrypter, generateToken, userRepository } = makeSut();

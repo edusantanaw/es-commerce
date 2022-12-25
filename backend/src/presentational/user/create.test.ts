@@ -106,8 +106,8 @@ describe("first", () => {
       createUserUseCase
     );
     const response = await userCreateController.handle(validUser);
-    expect(response).toStrictEqual(
-      httpResponse.badRequest(new EmailAlreadyBeingUsed())
+    expect(response).toEqual(
+      httpResponse.catch(new EmailAlreadyBeingUsed().message)
     );
   });
 
@@ -119,6 +119,8 @@ describe("first", () => {
       createUserUseCase
     );
     const response = await userCreateController.handle(validUser);
-    expect(response).toEqual({ accessToken: "token", user: validUser });
+    expect(response).toEqual(
+      httpResponse.success({ accessToken: "token", user: validUser })
+    );
   });
 });

@@ -5,7 +5,7 @@ import { EmailValidator } from "../../utils/helper/emailValidator";
 import { Encrypter } from "../../utils/helper/encrypter";
 import { GenerateToken } from "../../utils/helper/generateToken";
 
-function makeUserCreateFactory() {
+export function makeUserCreateFactory() {
   const userRepository = new UserRepository();
   const emailValidator = new EmailValidator();
   const generateToken = new GenerateToken();

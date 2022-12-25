@@ -14,30 +14,30 @@ export class UserCreateController {
 
   async handle(data: data) {
     try {
-      this.validate(data);
+      const { name, email, password, confirmPassword } = data;
+      if (!name) return httpResponse.badRequest(new InvalidParamError("name"));
+
+      if (!email)
+        return httpResponse.badRequest(new InvalidParamError("email"));
+
+      if (!password)
+        return httpResponse.badRequest(new InvalidParamError("password"));
+
+      if (!confirmPassword)
+        return httpResponse.badRequest(
+          new InvalidParamError("confirmPassword")
+        );
+
+      if (password !== confirmPassword)
+        return httpResponse.badRequest(new NotEqualsError());
+
+      if (!this.emailValidator.isValid(email))
+        return httpResponse.badRequest(new InvalidEmailError());
+
       const { accessToken, user } = await this.createUserUseCase.create(data);
-      return { accessToken, user };
+      return httpResponse.success({ accessToken, user });
     } catch (error) {
-      return error;
+      return httpResponse.catch(error);
     }
-  }
-
-  validate(data: data) {
-    const { name, email, password, confirmPassword } = data;
-    if (!name) throw httpResponse.badRequest(new InvalidParamError("name"));
-
-    if (!email) throw httpResponse.badRequest(new InvalidParamError("email"));
-
-    if (!password)
-      throw httpResponse.badRequest(new InvalidParamError("password"));
-
-    if (!confirmPassword)
-      throw httpResponse.badRequest(new InvalidParamError("confirmPassword"));
-
-    if (password !== confirmPassword)
-      throw httpResponse.badRequest(new NotEqualsError());
-
-    if (!this.emailValidator.isValid(email))
-      throw httpResponse.badRequest(new InvalidEmailError());
   }
 }

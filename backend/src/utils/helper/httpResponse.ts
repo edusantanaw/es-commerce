@@ -12,6 +12,19 @@ class HttpResponse {
       body: error,
     };
   }
+
+  catch(error: unknown) {
+    return {
+      statusCode: 400,
+      body: error,
+    };
+  }
+  success(data: any) {
+    return {
+      statusCode: 200,
+      body: data,
+    };
+  }
 }
 
 export default new HttpResponse();

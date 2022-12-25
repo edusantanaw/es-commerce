@@ -6,4 +6,9 @@ export class Encrypter {
     const hashedPassword = await bcrypt.hash(pass, salt);
     return hashedPassword;
   }
+
+  async compare(pass: string, userPass: string) {
+    const isEquals = await bcrypt.compare(pass, userPass);
+    return isEquals;
+  }
 }

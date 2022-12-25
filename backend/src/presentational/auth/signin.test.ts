@@ -1,15 +1,11 @@
 import { user } from "../../domain/entities/user";
 import { EmailValidatorSpy } from "../../mocks/emailValidatorSpy";
-import { emailValidator } from "../../protocols/helpers/emailValidator";
+import { AuthUseCase } from "../../protocols/useCases/authUsecase";
 import { InvalidEmailError } from "../../utils/helper/errors/invalidEmail";
 import { InvalidParamError } from "../../utils/helper/errors/InvalidParams";
 import httpResponse from "../../utils/helper/httpResponse";
 import { validUser } from "../../utils/helper/validUser";
-
-interface data {
-  email: string;
-  password: string;
-}
+import { SigninController } from "./signin";
 
 class AuthUseCaseSpy implements AuthUseCase {
   token = "token";
@@ -25,41 +21,6 @@ class AuthUseCaseSpy implements AuthUseCase {
       throw "Password is invalid!";
     }
     throw "User not found!";
-  }
-}
-
-interface AuthUseCase {
-  auth: (
-    email: string,
-    password: string
-  ) => Promise<{ accessToken: string; user: user }>;
-}
-
-class SigninController {
-  constructor(
-    private readonly emailValidator: emailValidator,
-    private readonly authUseCase: AuthUseCase
-  ) {}
-
-  async handle(data: data) {
-    try {
-      const { email, password } = data;
-      if (!email)
-        return httpResponse.badRequest(new InvalidParamError("email"));
-      if (!password)
-        return httpResponse.badRequest(new InvalidParamError("password"));
-
-      if (!this.emailValidator.isValid(email))
-        return httpResponse.badRequest(new InvalidEmailError());
-
-      const { accessToken, user } = await this.authUseCase.auth(
-        email,
-        password
-      );
-      return httpResponse.success({ accessToken, user });
-    } catch (error) {
-      return httpResponse.catch(error);
-    }
   }
 }
 
@@ -120,6 +81,7 @@ describe("Signin controller", () => {
     });
     expect(response).toEqual(httpResponse.catch("Password is invalid!"));
   });
+
   test("Should return access token and an user if user is authenticated", async () => {
     const { signinController, emailValidator, authUseCase } = makeSut();
     authUseCase.user = validUser;

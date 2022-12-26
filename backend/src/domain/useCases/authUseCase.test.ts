@@ -1,28 +1,8 @@
 import { EncrypterSpy } from "../../mocks/helpers/encrypterSpy";
 import { GenerateTokenSpy } from "../../mocks/helpers/generateTokenSpy";
 import { UserRepositorySpy } from "../../mocks/repositories/userRepositorySpy";
-import { encrypter } from "../../protocols/helpers/encrypter";
-import { generateToken } from "../../protocols/helpers/generateToken";
-import { userRepository } from "../../protocols/repository/userRepository";
 import { validUser } from "../../utils/helper/validUser";
-
-export class AuthUseCase {
-  constructor(
-    private readonly userRepository: userRepository,
-    private readonly encrypter: encrypter,
-    private readonly generateToken: generateToken
-  ) {}
-  async auth(email: string, password: string) {
-    const user = await this.userRepository.loadByEmail(email);
-    if (!user) throw "User not found!";
-
-    const isPassValid = await this.encrypter.compare(password, user.password);
-    if (!isPassValid) throw "Password is invalid!";
-
-    const token = this.generateToken.generate(user.id, "secret");
-    return { accessToken: token, user: user };
-  }
-}
+import { AuthUseCase } from "./authUsecase";
 
 function makeSut() {
   const userRepositorySpy = new UserRepositorySpy();

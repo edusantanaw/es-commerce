@@ -26,6 +26,7 @@ describe("first", () => {
       email: "",
       password: "",
       confirmPassword: "",
+      key: "",
     });
 
     expect(response).toEqual(
@@ -40,6 +41,7 @@ describe("first", () => {
       email: "",
       password: "",
       confirmPassword: "",
+      key: "",
     });
 
     expect(response).toEqual(
@@ -53,6 +55,7 @@ describe("first", () => {
       email: "valid_email@email.com",
       password: "",
       confirmPassword: "",
+      key: "",
     });
 
     expect(response).toEqual(
@@ -67,6 +70,7 @@ describe("first", () => {
       email: "valid_email@email.com",
       password: "valiid_password",
       confirmPassword: "",
+      key: "",
     });
 
     expect(response).toEqual(
@@ -80,6 +84,7 @@ describe("first", () => {
       email: "valid_email@email.com",
       password: "valid_password",
       confirmPassword: "confirmPassword",
+      key: "",
     });
 
     expect(response).toEqual(httpResponse.badRequest(new NotEqualsError()));
@@ -92,7 +97,13 @@ describe("first", () => {
       emailValidatorSpy,
       createUserUseCase
     );
-    const response = await userCreateController.handle(validUser);
+    const response = await userCreateController.handle({
+      email: validUser.email,
+      name: validUser.name,
+      key: validUser.activedKey,
+      password: validUser.password,
+      confirmPassword: "valid_password",
+    });
 
     expect(response).toEqual(httpResponse.badRequest(new InvalidEmailError()));
   });
@@ -105,7 +116,13 @@ describe("first", () => {
       emailValidatorSpy,
       createUserUseCase
     );
-    const response = await userCreateController.handle(validUser);
+    const response = await userCreateController.handle({
+      email: validUser.email,
+      name: validUser.name,
+      key: validUser.activedKey,
+      password: validUser.password,
+      confirmPassword: "valid_password",
+    });
     expect(response).toEqual(
       httpResponse.catch(new EmailAlreadyBeingUsed().message)
     );
@@ -118,9 +135,25 @@ describe("first", () => {
       emailValidatorSpy,
       createUserUseCase
     );
-    const response = await userCreateController.handle(validUser);
+    const response = await userCreateController.handle({
+      email: validUser.email,
+      name: validUser.name,
+      key: validUser.activedKey,
+      password: validUser.password,
+      confirmPassword: "valid_password",
+    });
     expect(response).toEqual(
-      httpResponse.success({ accessToken: "token", user: validUser })
+      httpResponse.success({
+        accessToken: "token",
+        user: {
+          id: "any_id",
+          email: validUser.email,
+          name: validUser.name,
+          password: validUser.password,
+          actived: true,
+          activedKey: "any",
+        },
+      })
     );
   });
 });

@@ -11,4 +11,10 @@ export class UserRepositorySpy {
   async create(data: data) {
     return (this.user = validUser);
   }
+
+  async loadById(id: string) {
+    return this.user;
+  }
+
+  async activeUser(userId: string) {}
 }

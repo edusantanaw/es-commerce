@@ -11,8 +11,27 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
-  email    String
-  password String
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  email      String
+  password   String
+  activedKey String?
+  actived    Boolean @default(false)
+}
+
+model Product {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  categoryId String
+  price      Float
+  image      String[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Category {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

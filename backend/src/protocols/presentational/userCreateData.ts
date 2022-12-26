@@ -3,4 +3,5 @@ export interface data {
   email: string;
   password: string;
   confirmPassword: string;
+  key: string | null;
 }

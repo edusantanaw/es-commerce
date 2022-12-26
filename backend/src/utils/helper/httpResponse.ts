@@ -19,6 +19,13 @@ class HttpResponse {
       body: error,
     };
   }
+
+  notContent(name: string) {
+    return {
+      statusCode: 204,
+      body: `${name} not found!`,
+    };
+  }
   success(data: any) {
     return {
       statusCode: 200,

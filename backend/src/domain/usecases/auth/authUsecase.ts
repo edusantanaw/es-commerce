@@ -1,6 +1,6 @@
-import { encrypter } from "../../protocols/helpers/encrypter";
-import { generateToken } from "../../protocols/helpers/generateToken";
-import { userRepository } from "../../protocols/repository/userRepository";
+import { encrypter } from "../../../protocols/helpers/encrypter";
+import { generateToken } from "../../../protocols/helpers/generateToken";
+import { userRepository } from "../../../protocols/repository/userRepository";
 
 export class AuthUseCase {
   constructor(

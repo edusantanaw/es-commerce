@@ -1,8 +1,8 @@
-import { EncrypterSpy } from "../../mocks/helpers/encrypterSpy";
-import { GenerateTokenSpy } from "../../mocks/helpers/generateTokenSpy";
-import { UserRepositorySpy } from "../../mocks/repositories/userRepositorySpy";
-import { EmailAlreadyBeingUsed } from "../../utils/errors/emailAlreadyBeingUsed";
-import { validUser } from "../../utils/helper/validUser";
+import { EncrypterSpy } from "../../../mocks/helpers/encrypterSpy";
+import { GenerateTokenSpy } from "../../../mocks/helpers/generateTokenSpy";
+import { UserRepositorySpy } from "../../../mocks/repositories/userRepositorySpy";
+import { EmailAlreadyBeingUsed } from "../../../utils/errors/emailAlreadyBeingUsed";
+import { validUser } from "../../../utils/helper/validUser";
 import { CreateUserUseCase } from "./createUserUseCase";
 
 function makeSut() {

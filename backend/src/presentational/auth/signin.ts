@@ -1,7 +1,7 @@
 import { emailValidator } from "../../protocols/helpers/emailValidator";
 import { AuthUseCase } from "../../protocols/useCases/authUsecase";
-import { InvalidEmailError } from "../../utils/helper/errors/invalidEmail";
-import { InvalidParamError } from "../../utils/helper/errors/InvalidParams";
+import { InvalidEmailError } from "../../utils/errors/invalidEmail";
+import { InvalidParamError } from "../../utils/errors/InvalidParams";
 import httpResponse from "../../utils/helper/httpResponse";
 
 interface data {

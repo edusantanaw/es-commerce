@@ -1,9 +1,9 @@
 import { EmailValidatorSpy } from "../../mocks/emailValidatorSpy";
 import { CreateUserUseCaseSpy } from "../../mocks/useCases/createUser";
-import { EmailAlreadyBeingUsed } from "../../utils/helper/errors/emailAlreadyBeingUsed";
-import { InvalidEmailError } from "../../utils/helper/errors/invalidEmail";
-import { InvalidParamError } from "../../utils/helper/errors/InvalidParams";
-import { NotEqualsError } from "../../utils/helper/errors/notEquals";
+import { EmailAlreadyBeingUsed } from "../../utils/errors/emailAlreadyBeingUsed";
+import { InvalidEmailError } from "../../utils/errors/invalidEmail";
+import { InvalidParamError } from "../../utils/errors/InvalidParams";
+import { NotEqualsError } from "../../utils/errors/notEquals";
 import httpResponse from "../../utils/helper/httpResponse";
 import { validUser } from "../../utils/helper/validUser";
 import { UserCreateController } from "./create";
@@ -151,7 +151,7 @@ describe("first", () => {
           name: validUser.name,
           password: validUser.password,
           actived: true,
-          activedKey: "any",
+          activedKey: "valid_key",
         },
       })
     );

@@ -1,8 +1,8 @@
 import { user } from "../../domain/entities/user";
 import { EmailValidatorSpy } from "../../mocks/emailValidatorSpy";
 import { AuthUseCase } from "../../protocols/useCases/authUsecase";
-import { InvalidEmailError } from "../../utils/helper/errors/invalidEmail";
-import { InvalidParamError } from "../../utils/helper/errors/InvalidParams";
+import { InvalidEmailError } from "../../utils/errors/invalidEmail";
+import { InvalidParamError } from "../../utils/errors/InvalidParams";
 import httpResponse from "../../utils/helper/httpResponse";
 import { validUser } from "../../utils/helper/validUser";
 import { SigninController } from "./signin";

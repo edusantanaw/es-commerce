@@ -1,5 +1,5 @@
 import { ActiveUseCase } from "../../mocks/useCases/activeUser";
-import { InvalidParamError } from "../../utils/helper/errors/InvalidParams";
+import { InvalidParamError } from "../../utils/errors/InvalidParams";
 import httpResponse from "../../utils/helper/httpResponse";
 import { validUser } from "../../utils/helper/validUser";
 import { ActiveUser } from "./active";

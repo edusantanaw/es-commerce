@@ -1,5 +1,5 @@
 import { activeUseCase } from "../../protocols/useCases/activeUser";
-import { InvalidParamError } from "../../utils/helper/errors/InvalidParams";
+import { InvalidParamError } from "../../utils/errors/InvalidParams";
 import httpResponse from "../../utils/helper/httpResponse";
 
 export class ActiveUser {

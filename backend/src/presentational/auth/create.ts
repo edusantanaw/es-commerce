@@ -1,9 +1,9 @@
 import { emailValidator } from "../../protocols/helpers/emailValidator";
 import { data } from "../../protocols/presentational/userCreateData";
 import { createUserUseCase } from "../../protocols/useCases/createUserUsecase";
-import { InvalidEmailError } from "../../utils/helper/errors/invalidEmail";
-import { InvalidParamError } from "../../utils/helper/errors/InvalidParams";
-import { NotEqualsError } from "../../utils/helper/errors/notEquals";
+import { InvalidEmailError } from "../../utils/errors/invalidEmail";
+import { InvalidParamError } from "../../utils/errors/InvalidParams";
+import { NotEqualsError } from "../../utils/errors/notEquals";
 import httpResponse from "../../utils/helper/httpResponse";
 
 export class UserCreateController {

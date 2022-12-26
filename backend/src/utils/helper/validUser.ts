@@ -6,5 +6,5 @@ export const validUser: user = {
   email: "invalid_email",
   password: "valid_password",
   actived: true,
-  activedKey: "any",
+  activedKey: "valid_key",
 };

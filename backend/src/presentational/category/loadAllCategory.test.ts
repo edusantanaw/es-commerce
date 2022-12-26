@@ -1,29 +1,6 @@
-import { category } from "../../domain/entities/category";
+import { LoadCategoryUseCase } from "../../mocks/useCases/loadCategory";
 import httpResponse from "../../utils/helper/httpResponse";
-
-interface loadCategoryUseCase {
-  loadAll: () => Promise<category[]>;
-}
-
-class LoadAllCategory {
-  constructor(private readonly loadCategoryUseCase: loadCategoryUseCase) {}
-  async handle() {
-    try {
-      const categories = await this.loadCategoryUseCase.loadAll();
-      if (categories.length === 0) return httpResponse.notContent("Category");
-      return httpResponse.success(categories);
-    } catch (error) {
-      return httpResponse.catch(error);
-    }
-  }
-}
-
-class LoadCategoryUseCase {
-  categories: category[] = [];
-  async loadAll() {
-    return this.categories;
-  }
-}
+import { LoadAllCategory } from "./loadAllCategory";
 
 function makeSut() {
   const loadCategoryUseCase = new LoadCategoryUseCase();

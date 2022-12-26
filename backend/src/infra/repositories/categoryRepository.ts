@@ -11,7 +11,7 @@ export class CategoryRepository implements categoryRepository {
     return;
   }
   async loadByName(name: string) {
-    const categoryResponse = await category.findFirst({
+    const categoryResponse = await category.findMany({
       where: {
         name: name,
       },
@@ -26,5 +26,10 @@ export class CategoryRepository implements categoryRepository {
       },
     });
     return categoryResponse;
+  }
+
+  async loadAll() {
+    const categories = await category.findMany();
+    return categories;
   }
 }

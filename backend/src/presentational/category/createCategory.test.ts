@@ -24,8 +24,8 @@ describe("Create Category", () => {
     expect(response).toEqual(httpResponse.catch("Category already exists!"));
   });
   test("Should return status 200 and true if category is created", async () => {
-    const { createCategory } = makeSut();
-    const response = await createCategory.handle({ name: "already_usedName" });
+    const { createCategory, createCategoryUseCase } = makeSut();
+    const response = await createCategory.handle({ name: "any_name" });
     expect(response).toEqual(httpResponse.success(true));
   });
 });

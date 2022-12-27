@@ -3,6 +3,6 @@ export class CreateCategoryUseCaseSpy {
   async create(name: string) {
     this.categoryExists;
     if (this.categoryExists) throw "Category already exists!";
-    return;
+    return true;
   }
 }

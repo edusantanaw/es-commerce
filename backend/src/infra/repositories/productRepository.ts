@@ -41,4 +41,17 @@ export class ProductRepository {
     });
     return products;
   }
+  async updateProduct(data: {
+    id: string;
+    price: number;
+    name: string;
+    categoryId: string;
+  }) {
+    await product.update({
+      where: {
+        id: data.id,
+      },
+      data: data,
+    });
+  }
 }

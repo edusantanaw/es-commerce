@@ -6,6 +6,6 @@ export class ActiveUseCase {
   async active(userId: string, key: string) {
     if (!this.user) throw "User not found!";
     if (!this.keyIsValid) throw "Key is not valid!";
-    return;
+    return true;
   }
 }

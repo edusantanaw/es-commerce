@@ -7,7 +7,7 @@ import {
   success,
 } from "../../utils/helper/httpResponse";
 
-export class LoadByCategory {
+export class LoadProductByCategory {
   constructor(private loadProductUsecase: loadProductUsecase) {}
   async handle({ categoryId }: { categoryId: string }) {
     try {

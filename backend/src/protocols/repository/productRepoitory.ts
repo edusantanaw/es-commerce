@@ -9,4 +9,5 @@ export type data = {
 
 export interface productRepository {
   create: (data: data) => Promise<product>;
+  loadAll: () => Promise<product[] | null>;
 }

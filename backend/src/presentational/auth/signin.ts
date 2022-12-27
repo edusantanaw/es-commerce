@@ -2,7 +2,7 @@ import { emailValidator } from "../../protocols/helpers/emailValidator";
 import { AuthUseCase } from "../../protocols/useCases/authUsecase";
 import { InvalidEmailError } from "../../utils/errors/invalidEmail";
 import { InvalidParamError } from "../../utils/errors/InvalidParams";
-import httpResponse from "../../utils/helper/httpResponse";
+import { badRequest, server, success } from "../../utils/helper/httpResponse";
 
 interface data {
   email: string;
@@ -18,21 +18,19 @@ export class SigninController {
   async handle(data: data) {
     try {
       const { email, password } = data;
-      if (!email)
-        return httpResponse.badRequest(new InvalidParamError("email"));
-      if (!password)
-        return httpResponse.badRequest(new InvalidParamError("password"));
+      if (!email) return badRequest(new InvalidParamError("email"));
+      if (!password) return badRequest(new InvalidParamError("password"));
 
       if (!this.emailValidator.isValid(email))
-        return httpResponse.badRequest(new InvalidEmailError());
+        return badRequest(new InvalidEmailError());
 
       const { accessToken, user } = await this.authUseCase.auth(
         email,
         password
       );
-      return httpResponse.success({ accessToken, user });
+      return success({ accessToken, user });
     } catch (error) {
-      return httpResponse.catch(error);
+      return server(error);
     }
   }
 }

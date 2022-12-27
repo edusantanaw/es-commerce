@@ -3,12 +3,22 @@ import { validProduct } from "../../presentational/product/createProduct.test";
 import { data } from "../../protocols/repository/productRepoitory";
 
 export class ProductRepositorySpy {
-  product = validProduct;
+  product: product | null = validProduct;
   products: product[] | null = null;
   async create(data: data) {
-    return this.product;
+    if (this.product) return this.product;
+    return validProduct;
   }
   async loadAll() {
+    return this.products;
+  }
+  async loadByCategory(categoryId: string) {
+    return this.products;
+  }
+  async loadById(id: string) {
+    return this.product;
+  }
+  async loadByName(name: string) {
     return this.products;
   }
 }

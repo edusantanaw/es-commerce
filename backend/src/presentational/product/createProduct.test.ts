@@ -1,7 +1,7 @@
 import { product } from "../../domain/entities/product";
 import { CreateProductUsecaseSpy } from "../../mocks/useCases/createProduct";
 import { InvalidParamError } from "../../utils/errors/InvalidParams";
-import httpResponse from "../../utils/helper/httpResponse";
+import { badRequest, server, success } from "../../utils/helper/httpResponse";
 import { CreateProduct } from "./create";
 
 export const validProduct: product = {
@@ -40,9 +40,7 @@ describe("Create product", () => {
       files: [],
       price: null,
     });
-    expect(response).toEqual(
-      httpResponse.badRequest(new InvalidParamError("name"))
-    );
+    expect(response).toEqual(badRequest(new InvalidParamError("name")));
   });
   test("Should return status 400 if no categoryUd is provided", async () => {
     const { createProduct } = makeSut();
@@ -52,9 +50,7 @@ describe("Create product", () => {
       files: [],
       price: null,
     });
-    expect(response).toEqual(
-      httpResponse.badRequest(new InvalidParamError("categoryId"))
-    );
+    expect(response).toEqual(badRequest(new InvalidParamError("categoryId")));
   });
   test("Should return status 400 if no price is provided", async () => {
     const { createProduct } = makeSut();
@@ -64,9 +60,7 @@ describe("Create product", () => {
       files: [],
       price: null,
     });
-    expect(response).toEqual(
-      httpResponse.badRequest(new InvalidParamError("price"))
-    );
+    expect(response).toEqual(badRequest(new InvalidParamError("price")));
   });
   test("Should return status 400 if no Image is provided", async () => {
     const { createProduct } = makeSut();
@@ -76,9 +70,7 @@ describe("Create product", () => {
       files: [],
       price: 22.22,
     });
-    expect(response).toEqual(
-      httpResponse.badRequest(new InvalidParamError("Image"))
-    );
+    expect(response).toEqual(badRequest(new InvalidParamError("Image")));
   });
   test("Should throw if category is invalid", async () => {
     const { createProduct } = makeSut();
@@ -88,7 +80,7 @@ describe("Create product", () => {
       files: [validImage],
       price: 22.22,
     });
-    expect(response).toEqual(httpResponse.catch("Category not exists!"));
+    expect(response).toEqual(server("Category not exists!"));
   });
 
   test("Should return status 200 and an product", async () => {
@@ -108,7 +100,7 @@ describe("Create product", () => {
       price: 22.22,
     });
     expect(response).toEqual(
-      httpResponse.success({
+      success({
         name: "any_name",
         price: 29.99,
         categoryId: "any_id",

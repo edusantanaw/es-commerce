@@ -1,6 +1,6 @@
 import { ActiveUseCase } from "../../mocks/useCases/activeUser";
 import { InvalidParamError } from "../../utils/errors/InvalidParams";
-import httpResponse from "../../utils/helper/httpResponse";
+import { badRequest, server, success } from "../../utils/helper/httpResponse";
 import { validUser } from "../../utils/helper/validUser";
 import { ActiveUser } from "./active";
 
@@ -14,23 +14,17 @@ describe("Active user", () => {
   test("Should return an status 400 and message if an userId is not provided", async () => {
     const { active } = makeSut();
     const response = await active.handle({ userId: "", key: "" });
-    expect(response).toEqual(
-      httpResponse.badRequest(new InvalidParamError("userId"))
-    );
+    expect(response).toEqual(badRequest(new InvalidParamError("userId")));
   });
   test("Should return an status 400 and message if an key is not provided", async () => {
     const { active } = makeSut();
     const response = await active.handle({ userId: "", key: "" });
-    expect(response).toEqual(
-      httpResponse.badRequest(new InvalidParamError("userId"))
-    );
+    expect(response).toEqual(badRequest(new InvalidParamError("userId")));
   });
   test("Should return an status 400 and message if an key is not provided", async () => {
     const { active } = makeSut();
     const response = await active.handle({ userId: "valid_userId", key: "" });
-    expect(response).toEqual(
-      httpResponse.badRequest(new InvalidParamError("key"))
-    );
+    expect(response).toEqual(badRequest(new InvalidParamError("key")));
   });
 
   test("Should return an status 400 and message if user not found", async () => {
@@ -39,7 +33,7 @@ describe("Active user", () => {
       userId: "invalid_userId",
       key: "valid_key",
     });
-    expect(response).toEqual(httpResponse.catch("User not found!"));
+    expect(response).toEqual(server("User not found!"));
   });
 
   test("Should return an status 400 and message if an invalid key is provided", async () => {
@@ -49,7 +43,7 @@ describe("Active user", () => {
       userId: "valid_userId",
       key: "invalid_key",
     });
-    expect(response).toEqual(httpResponse.catch("Key is not valid!"));
+    expect(response).toEqual(server("Key is not valid!"));
   });
   test("Should return an status 200 and true if an valid key and valid user is provided", async () => {
     const { active, activeUseCase } = makeSut();
@@ -59,6 +53,6 @@ describe("Active user", () => {
       userId: "valid_userId",
       key: "valid_key",
     });
-    expect(response).toEqual(httpResponse.success(true));
+    expect(response).toEqual(success(true));
   });
 });

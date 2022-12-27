@@ -4,7 +4,7 @@ import { EmailAlreadyBeingUsed } from "../../utils/errors/emailAlreadyBeingUsed"
 import { InvalidEmailError } from "../../utils/errors/invalidEmail";
 import { InvalidParamError } from "../../utils/errors/InvalidParams";
 import { NotEqualsError } from "../../utils/errors/notEquals";
-import httpResponse from "../../utils/helper/httpResponse";
+import { badRequest, server, success } from "../../utils/helper/httpResponse";
 import { validUser } from "../../utils/helper/validUser";
 import { UserCreateController } from "./create";
 
@@ -29,9 +29,7 @@ describe("first", () => {
       key: "",
     });
 
-    expect(response).toEqual(
-      httpResponse.badRequest(new InvalidParamError("name"))
-    );
+    expect(response).toEqual(badRequest(new InvalidParamError("name")));
   });
 
   test("Should return statusCode = 400 if email is not provided ", async () => {
@@ -44,9 +42,7 @@ describe("first", () => {
       key: "",
     });
 
-    expect(response).toEqual(
-      httpResponse.badRequest(new InvalidParamError("email"))
-    );
+    expect(response).toEqual(badRequest(new InvalidParamError("email")));
   });
   test("Should return statusCode = 400 if invalid password is provided ", async () => {
     const { userCreateController } = makeSut();
@@ -58,9 +54,7 @@ describe("first", () => {
       key: "",
     });
 
-    expect(response).toEqual(
-      httpResponse.badRequest(new InvalidParamError("password"))
-    );
+    expect(response).toEqual(badRequest(new InvalidParamError("password")));
   });
 
   test("Should return statusCode = 400 if invalid confirmPassword is provided ", async () => {
@@ -74,7 +68,7 @@ describe("first", () => {
     });
 
     expect(response).toEqual(
-      httpResponse.badRequest(new InvalidParamError("confirmPassword"))
+      badRequest(new InvalidParamError("confirmPassword"))
     );
   });
   test("Should return statusCode = 400 if passwords is not equals", async () => {
@@ -87,7 +81,7 @@ describe("first", () => {
       key: "",
     });
 
-    expect(response).toEqual(httpResponse.badRequest(new NotEqualsError()));
+    expect(response).toEqual(badRequest(new NotEqualsError()));
   });
 
   test("Should return statusCode = 400 if an invalid email is provided", async () => {
@@ -105,7 +99,7 @@ describe("first", () => {
       confirmPassword: "valid_password",
     });
 
-    expect(response).toEqual(httpResponse.badRequest(new InvalidEmailError()));
+    expect(response).toEqual(badRequest(new InvalidEmailError()));
   });
 
   test("Should return an error if email provided is already being used", async () => {
@@ -123,9 +117,7 @@ describe("first", () => {
       password: validUser.password,
       confirmPassword: "valid_password",
     });
-    expect(response).toEqual(
-      httpResponse.catch(new EmailAlreadyBeingUsed().message)
-    );
+    expect(response).toEqual(server(new EmailAlreadyBeingUsed().message));
   });
 
   test("Should return an access token and user if user is created with success", async () => {
@@ -143,7 +135,7 @@ describe("first", () => {
       confirmPassword: "valid_password",
     });
     expect(response).toEqual(
-      httpResponse.success({
+      success({
         accessToken: "token",
         user: {
           id: "any_id",

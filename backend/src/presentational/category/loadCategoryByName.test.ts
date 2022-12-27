@@ -1,6 +1,6 @@
 import { LoadCategoryUseCase } from "../../mocks/useCases/loadCategory";
 import { InvalidParamError } from "../../utils/errors/InvalidParams";
-import httpResponse from "../../utils/helper/httpResponse";
+import { badRequest } from "../../utils/helper/httpResponse";
 import { LoadCategoryByName } from "./loadCategoryByName";
 
 function makeSut() {
@@ -13,9 +13,7 @@ describe("Load category by id", () => {
   test("Should return status 400 if name is not provided", async () => {
     const { loadCategoryByName } = makeSut();
     const response = await loadCategoryByName.handle({ name: "" });
-    expect(response).toEqual(
-      httpResponse.badRequest(new InvalidParamError("name"))
-    );
+    expect(response).toEqual(badRequest(new InvalidParamError("name")));
   });
   test("should return status 204 if category not found", async () => {
     const { loadCategoryByName } = makeSut();

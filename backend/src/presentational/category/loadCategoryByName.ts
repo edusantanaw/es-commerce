@@ -1,18 +1,23 @@
 import { loadCategoryUseCase } from "../../protocols/useCases/loadCategory";
 import { InvalidParamError } from "../../utils/errors/InvalidParams";
-import httpResponse from "../../utils/helper/httpResponse";
+import {
+  badRequest,
+  notContent,
+  server,
+  success,
+} from "../../utils/helper/httpResponse";
 
 export class LoadCategoryByName {
   constructor(private loadCategoryUsecase: loadCategoryUseCase) {}
 
   async handle({ name }: { name: string }) {
     try {
-      if (!name) return httpResponse.badRequest(new InvalidParamError("name"));
+      if (!name) return badRequest(new InvalidParamError("name"));
       const category = await this.loadCategoryUsecase.loadByName(name);
-      if (!category) return httpResponse.notContent("Category");
-      return httpResponse.success(category);
+      if (!category) return notContent("Category");
+      return success(category);
     } catch (error) {
-      return httpResponse.catch(error);
+      return server(error);
     }
   }
 }

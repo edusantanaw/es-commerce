@@ -1,43 +1,7 @@
+import { CacheSpy } from "../../../mocks/repositories/cache";
 import { ProductRepositorySpy } from "../../../mocks/repositories/productRepository";
 import { validProduct } from "../../../presentational/product/createProduct.test";
-import { cache } from "../../../protocols/cache/cache";
-import { productRepository } from "../../../protocols/repository/productRepoitory";
-import { product } from "../../entities/product";
-
-const loadAllProductKey = "loadAllProduct";
-
-class LoadProductUsecase {
-  constructor(
-    private readonly cache: cache,
-    private productRepository: productRepository
-  ) {}
-
-  async loadAll() {
-    const productCache = await this.cache.get(loadAllProductKey);
-    if (productCache) return productCache;
-    const productsDb = await this.productRepository.loadAll();
-    if (productsDb) await this.cache.set(productsDb, loadAllProductKey);
-    return productsDb;
-  }
-}
-
-class CacheSpy {
-  data: any[] | null = null;
-  async get<T>(key: string) {
-    return this.data;
-  }
-  async set<T>(data: T[], key: string) {
-    this.data;
-    return;
-  }
-  async update<T>(data: T[], key: string) {
-    this.data;
-    return;
-  }
-  async remove(key: string) {
-    return;
-  }
-}
+import { LoadProductUsecase } from "./loadProduct";
 
 function makeSut() {
   const cache = new CacheSpy();
@@ -59,8 +23,52 @@ describe("Load products use case", () => {
     expect(response).toBe(null);
   });
   test("Should return null if product not found in cache or database ", async () => {
-    const { loadProductUsecase } = makeSut();
+    const { loadProductUsecase, productRepository } = makeSut();
+    productRepository.products = [validProduct, validProduct];
     const response = await loadProductUsecase.loadAll();
+    expect(response).toBe(productRepository.products);
+  });
+  test("Should return product of cache if exists", async () => {
+    const { cache, loadProductUsecase } = makeSut();
+    cache.data = [validProduct, validProduct];
+    const response = await loadProductUsecase.loadByCategory("any_id");
+    expect(response).toEqual(cache.data);
+  });
+  test("Should return null if product not found in cache or database ", async () => {
+    const { loadProductUsecase } = makeSut();
+    const response = await loadProductUsecase.loadByCategory("any_id");
     expect(response).toBe(null);
+  });
+  test("Should return null if product not found in cache or database ", async () => {
+    const { loadProductUsecase, productRepository } = makeSut();
+    productRepository.products = [validProduct, validProduct];
+    const response = await loadProductUsecase.loadByCategory("any_category");
+    expect(response).toBe(productRepository.products);
+  });
+
+  test("Should return null if product is not found", async () => {
+    const { loadProductUsecase, productRepository } = makeSut();
+    productRepository.product = null;
+    const response = await loadProductUsecase.loadById("any_id");
+    expect(response).toBe(null);
+  });
+  test("Should return an product if is found", async () => {
+    const { loadProductUsecase, productRepository } = makeSut();
+    productRepository.product = validProduct;
+    const response = await loadProductUsecase.loadById("any_id");
+    expect(response).toBe(validProduct);
+  });
+  test("Should return null if products are not found", async () => {
+    const { loadProductUsecase, productRepository } = makeSut();
+    productRepository.product = null;
+    const response = await loadProductUsecase.loadByName("any_name");
+    expect(response).toBe(null);
+  });
+  test("Should return null if products are not found", async () => {
+    const { loadProductUsecase, productRepository } = makeSut();
+    productRepository.products = [validProduct, validProduct];
+    productRepository.product = null;
+    const response = await loadProductUsecase.loadByName("any_name");
+    expect(response).toEqual([validProduct, validProduct]);
   });
 });

@@ -1,6 +1,6 @@
 import { createProductUsecase } from "../../protocols/useCases/createProduct";
 import { InvalidParamError } from "../../utils/errors/InvalidParams";
-import httpResponse from "../../utils/helper/httpResponse";
+import { badRequest, server, success } from "../../utils/helper/httpResponse";
 
 type data = {
   name: string | null;
@@ -14,13 +14,10 @@ export class CreateProduct {
   async handle(data: data) {
     try {
       const { name, categoryId, price, files } = data;
-      if (!name) return httpResponse.badRequest(new InvalidParamError("name"));
-      if (!categoryId)
-        return httpResponse.badRequest(new InvalidParamError("categoryId"));
-      if (!price)
-        return httpResponse.badRequest(new InvalidParamError("price"));
-      if (files.length === 0)
-        return httpResponse.badRequest(new InvalidParamError("Image"));
+      if (!name) return badRequest(new InvalidParamError("name"));
+      if (!categoryId) return badRequest(new InvalidParamError("categoryId"));
+      if (!price) return badRequest(new InvalidParamError("price"));
+      if (files.length === 0) return badRequest(new InvalidParamError("Image"));
       const images = files.map((img) => img.filename);
 
       const product = await this.createProductUsecase.create({
@@ -29,9 +26,9 @@ export class CreateProduct {
         images: images,
         price: price,
       });
-      return httpResponse.success(product);
+      return success(product);
     } catch (error) {
-      return httpResponse.catch(error);
+      return server(error);
     }
   }
 }

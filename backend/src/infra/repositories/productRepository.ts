@@ -8,4 +8,27 @@ export class ProductRepository {
     });
     return prodResponse;
   }
+
+  async loadAll() {
+    const products = await product.findMany();
+    return products;
+  }
+
+  async loadById(id: string) {
+    const productReponse = await product.findFirst({
+      where: {
+        id: id,
+      },
+    });
+    return productReponse;
+  }
+
+  async loadByCategory(categoryId: string) {
+    const products = await product.findMany({
+      where: {
+        categoryId: categoryId,
+      },
+    });
+    return products;
+  }
 }

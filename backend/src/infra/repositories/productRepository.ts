@@ -23,6 +23,16 @@ export class ProductRepository {
     return productReponse;
   }
 
+  async loadByName(name: string) {
+    const productsResponse = await product.findMany({
+      where: {
+        name: name,
+      },
+    });
+    if (productsResponse.length > 0) return productsResponse;
+    return null;
+  }
+
   async loadByCategory(categoryId: string) {
     const products = await product.findMany({
       where: {

@@ -1,3 +1,3 @@
 export interface createCategoryUsecase {
-  create: (name: string) => Promise<void>;
+  create: (name: string) => Promise<boolean>;
 }

@@ -1,11 +1,11 @@
 import { LoadProductUsecaseSpy } from "../../mocks/useCases/loadProducts";
 import { notContent, success } from "../../utils/helper/httpResponse";
 import { validProduct } from "./createProduct.test";
-import { LoadByCategory } from "./loadByCategory";
+import { LoadProductByCategory } from "./loadByCategory";
 
 function makeSut() {
   const loadProductUsecase = new LoadProductUsecaseSpy();
-  const loadByCategory = new LoadByCategory(loadProductUsecase);
+  const loadByCategory = new LoadProductByCategory(loadProductUsecase);
   return { loadByCategory, loadProductUsecase };
 }
 

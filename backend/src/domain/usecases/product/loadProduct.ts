@@ -1,5 +1,6 @@
 import { cache } from "../../../protocols/cache/cache";
 import { productRepository } from "../../../protocols/repository/productRepoitory";
+import { product } from "../../entities/product";
 
 export const loadAllProductKey = "loadAllProduct";
 const loadProductByCategoryKey = "loadProductByCategory";
@@ -11,7 +12,7 @@ export class LoadProductUsecase {
   ) {}
 
   async loadAll() {
-    const productCache = await this.cache.get(loadAllProductKey);
+    const productCache = await this.cache.get<product>(loadAllProductKey);
     if (productCache) return productCache;
     const productsDb = await this.productRepository.loadAll();
     if (productsDb) await this.cache.set(productsDb, loadAllProductKey);
@@ -19,7 +20,7 @@ export class LoadProductUsecase {
   }
 
   async loadByCategory(categoryId: string) {
-    const productCache = await this.cache.get(
+    const productCache = await this.cache.get<product>(
       loadProductByCategoryKey + categoryId
     );
     if (productCache) return productCache;

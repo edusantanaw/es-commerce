@@ -1,20 +1,6 @@
 import { UserRepositorySpy } from "../../../mocks/repositories/userRepositorySpy";
-import { userRepository } from "../../../protocols/repository/userRepository";
 import { validUser } from "../../../utils/helper/validUser";
-
-class LoadUserUsecase {
-  constructor(private userRepository: userRepository) {}
-  async loadAll() {
-    const users = await this.userRepository.loadAll();
-    if (!users) return null;
-    return users;
-  }
-  async loadById(id: string) {
-    const user = await this.userRepository.loadById(id);
-    if (!user) return null;
-    return user;
-  }
-}
+import { LoadUserUsecase } from "./loadUser";
 
 function makeSut() {
   const userRepository = new UserRepositorySpy();

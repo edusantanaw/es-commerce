@@ -32,6 +32,12 @@ export class UserRepository implements userRepository {
     return userResponse;
   }
 
+  async loadAll() {
+    const users = await user.findMany();
+    if (users.length === 0) return null;
+    return users;
+  }
+
   async activeUser(userId: string) {
     await user.update({
       where: {

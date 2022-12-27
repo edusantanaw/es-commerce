@@ -4,7 +4,7 @@ import { UserCreateController } from "../../presentational/auth/create";
 import { EmailValidator } from "../../utils/helper/emailValidator";
 import { Encrypter } from "../../utils/helper/encrypter";
 import { GenerateToken } from "../../utils/helper/generateToken";
-import { SenderEmail } from "../../utils/helper/nodemailer";
+import { SenderEmail } from "../../utils/services/nodemailer";
 
 function makeCreateUserUseCase() {
   const userRepository = new UserRepository();

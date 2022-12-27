@@ -6,4 +6,5 @@ export interface userRepository {
   create: (data: data) => Promise<user>;
   loadById: (id: string) => Promise<user | null>;
   activeUser: (userId: string) => Promise<void>;
+  loadAll: () => Promise<user[] | null>;
 }

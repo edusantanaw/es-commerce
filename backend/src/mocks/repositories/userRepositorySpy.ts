@@ -4,6 +4,7 @@ import { validUser } from "../../utils/helper/validUser";
 
 export class UserRepositorySpy {
   user: user | null = null;
+  users: user[] | null = null;
   async loadByEmail(email: string) {
     if (this.user) return this.user;
     return null;
@@ -14,6 +15,10 @@ export class UserRepositorySpy {
 
   async loadById(id: string) {
     return this.user;
+  }
+
+  async loadAll() {
+    return this.users;
   }
 
   async activeUser(userId: string) {}

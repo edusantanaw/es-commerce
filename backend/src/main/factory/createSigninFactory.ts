@@ -4,7 +4,6 @@ import { SigninController } from "../../presentational/auth/signin";
 import { EmailValidator } from "../../utils/helper/emailValidator";
 import { Encrypter } from "../../utils/helper/encrypter";
 import { GenerateToken } from "../../utils/helper/generateToken";
-import { SenderEmail } from "../../utils/helper/nodemailer";
 
 function makeAuthUseCase() {
   const userRepository = new UserRepository();

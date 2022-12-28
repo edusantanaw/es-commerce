@@ -7,6 +7,7 @@ export class CreateCategory {
 
   async handle({ name }: { name: string }) {
     try {
+      console.log(name);
       if (!name) return badRequest(new InvalidParamError("name"));
       await this.createCategoryUsecase.create(name);
       return success(true);

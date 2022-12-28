@@ -1,14 +1,17 @@
 import { ProductRepositorySpy } from "../../../mocks/repositories/productRepository";
-import { productRepository } from "../../../protocols/repository/productRepoitory";
+import {
+  dataUpdate,
+  productRepository,
+} from "../../../protocols/repository/productRepoitory";
 import { data } from "../../../protocols/useCases/updateProductUsecase";
 
 class UpadteProductUsecase {
   constructor(private productRepository: productRepository) {}
 
-  async update(data: data) {
+  async update(data: dataUpdate) {
     const product = await this.productRepository.loadById(data.id);
     if (!product) throw "Product not found!";
-    await this.productRepository.update(data);
+    if (data.price) await this.productRepository.update(data);
     return true;
   }
 }

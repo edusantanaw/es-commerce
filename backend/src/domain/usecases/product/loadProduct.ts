@@ -12,11 +12,27 @@ export class LoadProductUsecase {
   ) {}
 
   async loadAll() {
-    const productCache = await this.cache.get<product>(loadAllProductKey);
-    if (productCache) return productCache;
-    const productsDb = await this.productRepository.loadAll();
-    if (productsDb) await this.cache.set(productsDb, loadAllProductKey);
-    return productsDb;
+    try {
+      const productCache = await this.cache.get<product>(loadAllProductKey);
+      console.log(productCache, 1);
+      const verifyIdCacheIsValid = await this.cache.get(
+        loadAllProductKey + ":validate"
+      );
+      if (productCache) {
+        if (!verifyIdCacheIsValid) {
+          const updateCache = await this.productRepository.loadAll();
+          if (updateCache)
+            await this.cache.update(updateCache, loadAllProductKey);
+        }
+        return productCache;
+      }
+      const productsDb = await this.productRepository.loadAll();
+      if (productsDb) await this.cache.set(productsDb, loadAllProductKey);
+      return productsDb;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
   }
 
   async loadByCategory(categoryId: string) {

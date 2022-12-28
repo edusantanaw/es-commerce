@@ -9,11 +9,15 @@ export async function getToken(req: Request) {
   return decodedId;
 }
 
-export default async (req: Request, res: Response, next: NextFunction) => {
+export default async function verifyToken(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
-    const decodedId = await getToken(req);
+    await getToken(req);
     next();
   } catch (error) {
     return res.status(401).json(error);
   }
-};
+}

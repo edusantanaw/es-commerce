@@ -14,7 +14,12 @@ export class UpdateProduct {
       if (!name) return badRequest(new InvalidParamError("name"));
       if (!categoryId) return badRequest(new InvalidParamError("categoryId"));
       if (!price) return badRequest(new InvalidParamError("price"));
-      await this.updateProductUsecase.update(data);
+      await this.updateProductUsecase.update({
+        categoryId: categoryId,
+        id: id,
+        name: name,
+        price: price,
+      });
       return success(true);
     } catch (error) {
       return server(error);

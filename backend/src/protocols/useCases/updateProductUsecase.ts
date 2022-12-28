@@ -1,3 +1,5 @@
+import { dataUpdate } from "../repository/productRepoitory";
+
 export type data = {
   id: string;
   name: string;
@@ -5,5 +7,5 @@ export type data = {
   price: number | null;
 };
 export interface updateProductUsecase {
-  update: (data: data) => Promise<boolean>;
+  update: (data: dataUpdate) => Promise<boolean>;
 }

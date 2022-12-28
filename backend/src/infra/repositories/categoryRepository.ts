@@ -16,7 +16,8 @@ export class CategoryRepository implements categoryRepository {
         name: name,
       },
     });
-    return categoryResponse;
+    if (categoryResponse.length > 0) return categoryResponse;
+    return null;
   }
 
   async loadById(id: string) {

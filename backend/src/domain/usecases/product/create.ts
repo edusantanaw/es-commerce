@@ -10,6 +10,7 @@ export class CreteProductUsecase {
     private productRepository: productRepository
   ) {}
   async create(data: data) {
+    console.log(data);
     const verifyCategoryExists = await this.categoryRepository.loadById(
       data.categoryId
     );

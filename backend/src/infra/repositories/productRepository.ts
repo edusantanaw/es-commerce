@@ -4,7 +4,12 @@ import { product } from "../../prisma/prisma";
 export class ProductRepository {
   async create(data: data) {
     const prodResponse = await product.create({
-      data: data,
+      data: {
+        categoryId: data.categoryId,
+        image: data.images,
+        name: data.name,
+        price: data.price,
+      },
     });
     return prodResponse;
   }
@@ -41,7 +46,7 @@ export class ProductRepository {
     });
     return products;
   }
-  async updateProduct(data: {
+  async update(data: {
     id: string;
     price: number;
     name: string;

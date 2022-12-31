@@ -7,7 +7,8 @@
     "start": "node ./build/index.js",
     "build": "tsc -p .",
     "dev": "ts-node-dev --exit-child --transpile-only --ignore-watch node_modules ./src/main/index.ts",
-    "test": "jest"
+    "test": "jest",
+    "load": "npx autocannon -c 100 -d 10 localhost:5000/api/products --renderStatusCode"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -26,6 +27,7 @@
   "dependencies": {
     "@prisma/client": "^4.8.0",
     "@types/nodemailer": "^6.4.7",
+    "autocannon": "^7.10.0",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",

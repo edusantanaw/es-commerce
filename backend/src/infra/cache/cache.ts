@@ -1,7 +1,6 @@
 import { createClient } from "redis";
 import { cache } from "../../protocols/cache/cache";
 import { fork } from "child_process";
-import { dirname } from "path";
 
 export const client = createClient();
 client.connect();
@@ -18,16 +17,15 @@ export class Cache implements cache {
   }
 
   async set<T>(data: T[], key: string) {
-    await client.set(key, JSON.stringify(data));
-    await client.set(key + ":validate", JSON.stringify([]), { EX: 10 }); // 6 hours
+    await client.set(key, JSON.stringify(data), { EX: 1000 }); // 1 hours
     return;
   }
 
   async update<T>(data: T[], key: string) {
+    // const child = fork("./src/children_process/updateCache.ts");
+    // child.send({ type: type, key: key }); // update cache in second plan
     await this.remove(key);
-    const child = fork("./updateCache.ts");
-    child.send({ data: data, key: key }); // update cache in second plan
-    child.on("exit", () => console.log(`${key} cache updated!`));
+    await this.set(data, key);
     return;
   }
 

@@ -14,18 +14,7 @@ export class LoadProductUsecase {
   async loadAll() {
     try {
       const productCache = await this.cache.get<product>(loadAllProductKey);
-      console.log(productCache, 1);
-      const verifyIdCacheIsValid = await this.cache.get(
-        loadAllProductKey + ":validate"
-      );
-      if (productCache) {
-        if (!verifyIdCacheIsValid) {
-          const updateCache = await this.productRepository.loadAll();
-          if (updateCache)
-            await this.cache.update(updateCache, loadAllProductKey);
-        }
-        return productCache;
-      }
+      if (productCache) return productCache;
       const productsDb = await this.productRepository.loadAll();
       if (productsDb) await this.cache.set(productsDb, loadAllProductKey);
       return productsDb;
